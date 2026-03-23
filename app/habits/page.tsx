@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/server'
+import { createClient } from '@/lib/db'
 import { cookies } from 'next/headers'
 export default async function Habits() {
   const cookieStore = await cookies()
