@@ -1,4 +1,4 @@
-import { createClient } from '@/utils/supabase/server'
+import { createClient } from '@/lib/server'
 import { cookies } from 'next/headers'
 export default async function Habits() {
   const cookieStore = await cookies()
