@@ -19,17 +19,18 @@ A habit tracking app with daily check-ins, streaks, and visual progress charts �
 
 ## Tech stack
 
-| Layer        | Technology                         |
-| ------------ | ---------------------------------- |
-| Framework    | Next.js 15 (App Router)            |
-| Language     | TypeScript                         |
-| Styling      | Tailwind CSS + shadcn/ui           |
-| State        | Zustand                            |
-| Server state | Tanstack Query                     |
-| Forms        | React Hook Form + Zod              |
-| Charts       | Recharts                           |
-| Database     | Supabase PostgreSQL                |
-| API layer    | Next.js Route Handlers + lib/db.ts |
+| Layer        | Technology                 |
+| ------------ | -------------------------- |
+| Framework    | Next.js 15 (App Router)    |
+| Language     | TypeScript                 |
+| Styling      | Tailwind CSS + shadcn/ui   |
+| State        | Zustand (auth + UI)        |
+| Client Fetch | Tanstack Query             |
+| Server Fetch | Server Components          |
+| Forms        | React Hook Form + Zod      |
+| Charts       | Recharts                   |
+| Database     | Supabase PostgreSQL        |
+| API layer    | Server Actions + lib/db.ts |
 
 ## Getting started
 
@@ -50,21 +51,18 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 ```
 src/
 ├── app/
-│   ├── api/             # Route handlers (mock API)
-│   │   ├── auth/        # POST /api/auth/register, /api/auth/login
-│   │   ├── habits/      # GET, POST, PUT, DELETE /api/habits
-│   │   └── completions/ # GET, POST /api/completions
 │   ├── (auth)/          # Login and register pages
 │   └── (dashboard)/     # Habits, today, stats, settings
+├── actions/             # Server Actions (login, register, habits CRUD)
 ├── components/          # UI components (habits, stats, shared)
-├── hooks/               # Tanstack Query hooks
+├── hooks/               # Tanstack Query hooks (useHabits, useCompletions, useStats)
 ├── lib/
 │   ├── supabase.ts      # Supabase client initialization
 │   ├── db.ts            # Database abstraction layer
-│   ├── api.ts           # Fetch wrappers toward /api/*
 │   ├── schemas.ts       # Zod schemas shared between client and server
 │   └── utils.ts         # Date helpers, streak logic, CSV export
-├── middleware.ts         # Route protection
+├── providers/           # Tanstack Query provider
+├── middleware.ts        # Route protection
 ├── store/               # Zustand store (auth session + UI state)
 └── types/               # TypeScript interfaces
 ```
