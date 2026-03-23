@@ -1,3 +1,4 @@
+import HabitCard from '@/components/HabitCard'
 import { createClient } from '@/lib/db'
 import { cookies } from 'next/headers'
 export default async function Habits() {
@@ -10,7 +11,7 @@ export default async function Habits() {
       <h1>Habits</h1>
       <ul>
         {habits?.map((habit) => (
-          <li key={habit.id}>{habit.name}</li>
+          <HabitCard key={habit.id} habit={habit} />
         ))}
       </ul>
     </div>
