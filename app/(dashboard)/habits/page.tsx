@@ -1,9 +1,8 @@
 import HabitCard from '@/components/HabitCard'
-import { createSupabaseServerClient } from '@/lib/supabase-server'
-import { cookies } from 'next/headers'
+import { createClient } from '@/lib/supabase/server'
+
 export default async function Habits() {
-  const cookieStore = await cookies()
-  const supabase = createSupabaseServerClient(cookieStore)
+  const supabase = await createClient()
   const { data: habits } = await supabase.from('habits').select()
 
   return (
