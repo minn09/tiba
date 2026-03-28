@@ -19,18 +19,19 @@ A habit tracking app with daily check-ins, streaks, and visual progress charts �
 
 ## Tech stack
 
-| Layer        | Technology                 |
-| ------------ | -------------------------- |
-| Framework    | Next.js 15 (App Router)    |
-| Language     | TypeScript                 |
-| Styling      | Tailwind CSS + shadcn/ui   |
-| State        | Zustand (auth + UI)        |
-| Client Fetch | Tanstack Query             |
-| Server Fetch | Server Components          |
-| Forms        | React Hook Form + Zod      |
-| Charts       | Recharts                   |
-| Database     | Supabase PostgreSQL        |
-| API layer    | Server Actions + lib/db.ts |
+| Layer             | Technology                    |
+| ----------------- | ----------------------------- |
+| Framework         | Next.js 15 (App Router)       |
+| Language          | TypeScript                    |
+| Styling           | Tailwind CSS + shadcn/ui      |
+| State             | Zustand (auth + UI)           |
+| Client Fetch      | Tanstack Query                |
+| Server Fetch      | Server Components             |
+| Queries/Mutations | Server Actions (app/actions/) |
+| Forms             | React Hook Form + Zod         |
+| Charts            | Recharts                      |
+| Database          | Supabase PostgreSQL           |
+| Clients           | @supabase/ssr                 |
 
 ## Getting started
 
@@ -52,19 +53,47 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 src/
 ├── app/
 │   ├── (auth)/          # Login and register pages
-│   └── (dashboard)/     # Habits, today, stats, settings
-├── actions/             # Server Actions (login, register, habits CRUD)
-├── components/          # UI components (habits, stats, shared)
-├── hooks/               # Tanstack Query hooks (useHabits, useCompletions, useStats)
+│   ├── (dashboard)/    # Habits, today, stats, settings
+│   ├── actions/         # Server Actions (queries + mutations)
+│   │   ├── auth.ts     # login, register, logout
+│   │   └── habits.ts   # getHabits, createHabit, updateHabit, deleteHabit
+│   └── providers/      # Tanstack Query provider
+│
+├── components/
+│   ├── ui/             # shadcn/ui components
+│   ├── habits/         # HabitCard, HabitForm, HabitList
+│   ├── stats/          # Charts, HeatMap, StatsCard
+│   └── shared/         # Navbar, Sidebar, EmptyState
+│
 ├── lib/
-│   ├── supabase.ts      # Supabase client initialization
-│   ├── db.ts            # Database abstraction layer
-│   ├── schemas.ts       # Zod schemas shared between client and server
-│   └── utils.ts         # Date helpers, streak logic, CSV export
-├── providers/           # Tanstack Query provider
-├── middleware.ts        # Route protection
-├── store/               # Zustand store (auth session + UI state)
-└── types/               # TypeScript interfaces
+│   ├── supabase.ts         # Browser client (createBrowserClient)
+│   ├── supabase-server.ts  # Server client (createServerClient)
+│   ├── schemas.ts          # Zod schemas
+│   └── utils.ts           # Date helpers, streak logic, CSV export
+│
+├── hooks/
+│   ├── useHabits.ts        # Tanstack Query hooks
+│   ├── useCompletions.ts   # Tanstack Query hooks
+│   └── useStats.ts         # Tanstack Query hooks
+│
+├── store/
+│   └── useAuthStore.ts     # Zustand store (auth + UI state)
+│
+├── middleware.ts            # Route protection
+│
+└── types/
+    └── index.ts            # TypeScript interfaces
+```
+
+## Data flow
+
+```
+LECTURA:
+  Server Component → supabase-server.ts → Supabase (render inicial)
+  Tanstack Query → Server Action → supabase-server.ts → Supabase (interactivo)
+
+MUTACIÓN:
+  Server Action → supabase-server.ts → Supabase (create, update, delete)
 ```
 
 ## Scripts
