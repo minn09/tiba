@@ -1,16 +1,36 @@
 export type HabitFrequency = "daily" | "weekly" | "monthly"
+export type DayOfWeek = 0 | 1 | 2 | 3 | 4 | 5 | 6
+export type HexColor = `#${string}`
 
-export interface Habit {
-  id: string | number
+interface HabitBase {
+  id: string
+  userId: string
   name: string
-  description: string
-  icon: string // Emojis o nombre de icono
-  color: string // Hexadecimal o clase de CSS
+  description?: string
+  appearance: {
+    color: HexColor
+    icon: string // emoji o nombre de lucide icon
+  }
   frequency: HabitFrequency
-  targetDays: string | number
-  created_at: string // ISO date string
+  completions: Completion[]
+  targetDays?: DayOfWeek[]
+  createdAt: string
 }
 
-export interface HabitCardProps {
-  habit: Habit
+export type Habit =
+  | (HabitBase & { status: "active" })
+  | (HabitBase & { status: "archived"; archivedAt: string })
+
+export type User = {
+  id: string
+  email: string
+  name: string
+  createdAt: string
+}
+
+export type Completion = {
+  id: string
+  habitId: string
+  date: string // 'YYYY-MM-DD'
+  completedAt: string // ISO timestamp
 }
