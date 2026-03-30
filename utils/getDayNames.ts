@@ -1,4 +1,6 @@
-export const getDayNames = (days: string | number): string => {
+export const getDayNames = (
+  days: string | number | Array<string | number>
+): string => {
   const dayMap: Record<string, string> = {
     "1": "Lun",
     "2": "Mar",

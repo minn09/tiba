@@ -7,10 +7,8 @@ interface HabitBase {
   userId: string
   name: string
   description?: string
-  appearance: {
-    color: HexColor
-    icon: string // emoji o nombre de lucide icon
-  }
+  color: HexColor
+  icon: string // emoji o nombre de lucide icon
   frequency: HabitFrequency
   completions: Completion[]
   targetDays?: DayOfWeek[]

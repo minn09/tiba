@@ -15,13 +15,13 @@ export interface HabitCardProps {
 }
 
 export default function HabitCard({ habit }: HabitCardProps) {
-  const date = new Date(habit.created_at).toLocaleDateString("es-ES", {
+  const date = new Date(habit.createdAt).toLocaleDateString("es-ES", {
     day: "numeric",
     month: "short",
     year: "numeric",
   });
 
-  const formattedDays = getDayNames(habit.targetDays);
+  const formattedDays = getDayNames(habit.targetDays || []);
 
   return (
     <Card className="overflow-hidden border-l-4 shadow-sm hover:shadow-md transition-shadow" style={{ borderLeftColor: habit.color }}>

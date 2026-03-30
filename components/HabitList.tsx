@@ -10,13 +10,15 @@ export default function HabitList() {
   if (isError) return <p>Error al cargar</p>
 
   return (
-    <>
-      <h1>Mis Hábitos</h1>
+    <div className="space-y-5 p-5">
+      <h1 className="text-2xl font-bold">Mis Hábitos</h1>
       <ul>
         {habits?.map((habit) => (
-          <HabitCard key={habit.id} habit={habit} />
+          <HabitCard
+            key={habit.id}
+            habit={habit} />
         ))}
       </ul>
-    </>
+    </div>
   )
 }
