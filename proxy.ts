@@ -1,8 +1,7 @@
-// src/middleware.ts
 import { NextResponse, type NextRequest } from "next/server"
 import { createClient } from "@/lib/supabase/middleware"
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const response = NextResponse.next({ request })
   const supabase = createClient(request, response)
 
@@ -13,7 +12,7 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
   const isAuthRoute =
-        pathname.startsWith("/(auth)") ||
+    pathname.startsWith("/(auth)") ||
     pathname === "/login" ||
     pathname === "/register"
 
