@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 
 import { createClient } from "@/lib/supabase/server"
 import { AuthProvider } from "@/components/auth-provider"
+import { QueryProvider } from "@/lib/query/provider";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -32,11 +33,13 @@ export default async function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", fontSans.variable)}
     >
       <body>
-        <AuthProvider initialUser={user}>
-          <ThemeProvider>
-            {children}
-          </ThemeProvider>
-        </AuthProvider>
+        <QueryProvider>
+          <AuthProvider initialUser={user}>
+            <ThemeProvider>
+              {children}
+            </ThemeProvider>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   )

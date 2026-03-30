@@ -13,11 +13,11 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
   const isAuthRoute =
-    pathname.startsWith("/(auth)") ||
+        pathname.startsWith("/(auth)") ||
     pathname === "/login" ||
     pathname === "/register"
 
-  // Sin sesión → redirigir a login
+  // Sin sesión → redirigir a login (quitar esto para que no sea obligatorio el login, aclarando que es util para guardar tus datos)
   if (!user && !isAuthRoute) {
     return NextResponse.redirect(new URL("/login", request.url))
   }

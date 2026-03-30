@@ -1,18 +1,17 @@
-import HabitCard from '@/components/HabitCard'
-import { createClient } from '@/lib/supabase/server'
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
+import HabitList from '@/components/HabitList'
+import { habitsQueryOptions } from '@/lib/query/habitsQueryOptions'
 
 export default async function Habits() {
-  const supabase = await createClient()
-  const { data: habits } = await supabase.from('habits').select()
+  const queryClient = new QueryClient()
+
+  // Ejecuta la query en el servidor y la mete al cache
+  await queryClient.prefetchQuery(habitsQueryOptions)
 
   return (
-    <div>
-      <h1>Habits</h1>
-      <ul>
-        {habits?.map((habit) => (
-          <HabitCard key={habit.id} habit={habit} />
-        ))}
-      </ul>
-    </div>
+    // Serializa el cache del servidor y lo envía al cliente
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <HabitList />
+    </HydrationBoundary>
   )
 }
