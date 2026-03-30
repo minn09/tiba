@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from "@/components/ui/button"
-import { signOut } from "@/actions/auth"
+import { signOut } from "@/lib/query/auth"
 
 export default function Page() {
   const handleSignOut = async () => {

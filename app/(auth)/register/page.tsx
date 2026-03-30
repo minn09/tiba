@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { signUp } from "@/actions/auth"
+import { signUp } from "@/lib/query/auth"
 
 export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null)
