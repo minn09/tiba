@@ -1,6 +1,7 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
 import HabitList from '@/components/HabitList'
 import { habitsQueryOptions } from '@/lib/query/habitsQueryOptions'
+import { DialogHabits } from '@/components/DialogHabits'
 
 export default async function Habits() {
   const queryClient = new QueryClient()
@@ -10,8 +11,11 @@ export default async function Habits() {
 
   return (
     // Serializa el cache del servidor y lo envía al cliente
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <HabitList />
-    </HydrationBoundary>
+    <>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <HabitList />
+        <DialogHabits />
+      </HydrationBoundary>
+    </>
   )
 }

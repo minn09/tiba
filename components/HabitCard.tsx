@@ -7,19 +7,21 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarDays, CheckCircle2 } from "lucide-react";
-import { Habit } from "@/types/habit";
+import { HabitFormInput } from "@/types/habit";
 import { getDayNames } from "@/utils/getDayNames";
 
-export interface HabitCardProps {
-  habit: Habit;
-}
 
-export default function HabitCard({ habit }: HabitCardProps) {
-  const date = new Date(habit.createdAt).toLocaleDateString("es-ES", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  });
+export default function HabitCard({ habit }: { habit: HabitFormInput }) {
+  const date = (() => {
+    if (!habit?.createdAt) return "—";
+    const d = new Date(habit.createdAt);
+    if (isNaN(d.getTime())) return "—";
+    return d.toLocaleDateString("es-ES", {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    });
+  })();
 
   const formattedDays = getDayNames(habit.targetDays || []);
 

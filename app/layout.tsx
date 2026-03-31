@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/server"
 import { AuthProvider } from "@/components/auth-provider"
 import { QueryProvider } from "@/lib/query/provider";
+import { Toaster } from "@/components/ui/sonner"
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default async function RootLayout({
           <AuthProvider initialUser={user}>
             <ThemeProvider>
               {children}
+              <Toaster />
             </ThemeProvider>
           </AuthProvider>
         </QueryProvider>
