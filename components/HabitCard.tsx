@@ -9,9 +9,12 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarDays, CheckCircle2 } from "lucide-react";
 import { HabitFormInput } from "@/types/habit";
 import { getDayNames } from "@/utils/getDayNames";
+import { Button } from "./ui/button";
+import { useDeleteHabit } from "@/hooks/useDeleteHabit";
 
 
 export default function HabitCard({ habit }: { habit: HabitFormInput }) {
+  const { mutate: remove, isPending } = useDeleteHabit()
   const date = (() => {
     if (!habit?.createdAt) return "—";
     const d = new Date(habit.createdAt);
@@ -52,10 +55,19 @@ export default function HabitCard({ habit }: { habit: HabitFormInput }) {
             <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
             <span>{formattedDays}</span>
           </div>
-
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <CalendarDays className="h-4 w-4" />
             <span>Desde el {date}</span>
+          </div>
+          <div>
+            <Button
+              variant="destructive"
+              disabled={isPending}
+              onClick={() => remove(habit.id!)}
+            >
+              {isPending ? "Eliminando..." : "Delete"}
+            </Button>
+            <Button>Update</Button>
           </div>
         </div>
       </CardContent>

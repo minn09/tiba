@@ -18,3 +18,27 @@ export async function createHabit(habit: HabitFormOutput) {
   if (error) throw new Error(error.message)
   return data
 }
+
+export async function updateHabit(id: number, habit: HabitFormOutput) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("habits")
+    .update(habit)
+    .eq("id", id)
+    .select()
+
+  if (error) throw new Error(error.message)
+  return data
+}
+
+export async function deleteHabit(id: string) {
+  const supabase = await createClient()
+  const { data, error } = await supabase
+    .from("habits")
+    .delete()
+    .eq("id", id)
+    .select()
+
+  if (error) throw new Error(error.message)
+  return data
+}

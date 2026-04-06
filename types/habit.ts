@@ -1,6 +1,8 @@
 import * as z from "zod"
 
 export const habitSchema = z.object({
+  id: z.string().min(1).optional(), // ID generado por la base de datos
+  userId: z.string().optional(), // ID del usuario al que pertenece el hábito
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
   // Usamos .catch() o aseguramos que el default sea interpretado como string no-nulo
