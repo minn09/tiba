@@ -1,4 +1,4 @@
-'use client'
+"use client"
 
 import { useState } from "react"
 import { useForm, Controller } from "react-hook-form"
@@ -58,7 +58,7 @@ export function DialogHabits() {
     handleSubmit,
     control,
     reset,
-    formState: { errors, isValid }
+    formState: { errors, isValid },
   } = useForm<HabitFormInput>({
     resolver: zodResolver(habitSchema),
     mode: "onChange",
@@ -69,7 +69,7 @@ export function DialogHabits() {
       icon: "🔥",
       frequency: "daily",
       targetDays: [],
-    }
+    },
   })
 
   const onSubmit = async (values: HabitFormInput) => {
@@ -81,9 +81,9 @@ export function DialogHabits() {
       },
       onError: (e) => {
         toast.error("Error al crear", {
-          description: e instanceof Error ? e.message : "Unknown error"
+          description: e instanceof Error ? e.message : "Unknown error",
         })
-      }
+      },
     })
   }
 
@@ -100,45 +100,49 @@ export function DialogHabits() {
             </DialogDescription>
           </DialogHeader>
 
-          <FieldGroup className="py-4 space-y-4">
+          <FieldGroup className="space-y-4 py-4">
             {/* NAME */}
             <Field>
-              <Label>Name</Label>
-              <Input {...register("name")} />
-              {errors.name && <p className="text-xs text-red-500">{errors.name.message}</p>}
+              <Label htmlFor="habit-name">Name</Label>
+              <Input id="habit-name" {...register("name")} />
+              {errors.name && (
+                <p className="text-xs text-red-500">{errors.name.message}</p>
+              )}
             </Field>
 
             {/* DESCRIPTION */}
             <Field>
-              <Label>Description</Label>
-              <Input {...register("description")} />
+              <Label htmlFor="habit-description">Description</Label>
+              <Input id="habit-description" {...register("description")} />
             </Field>
 
             <div className="flex gap-4">
               {/* COLOR */}
               <Field className="flex-1">
-                <Label>Color</Label>
-                <Input {...register("color")} type="color" className="h-10" />
+                <Label htmlFor="habit-color">Color</Label>
+                <Input
+                  id="habit-color"
+                  {...register("color")}
+                  type="color"
+                  className="h-10"
+                />
               </Field>
               {/* ICON */}
               <Field className="flex-1">
-                <Label>Icon</Label>
-                <Input {...register("icon")} />
+                <Label htmlFor="habit-icon">Icon</Label>
+                <Input id="habit-icon" {...register("icon")} />
               </Field>
             </div>
 
             {/* FREQUENCY */}
             <Field>
-              <Label>Frequency</Label>
+              <Label htmlFor="habit-frequency">Frequency</Label>
               <Controller
                 name="frequency"
                 control={control}
                 render={({ field }) => (
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
-                  >
-                    <SelectTrigger className="w-full">
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <SelectTrigger id="habit-frequency" className="w-full">
                       <SelectValue placeholder="Select a frequency" />
                     </SelectTrigger>
                     <SelectContent>
@@ -154,26 +158,31 @@ export function DialogHabits() {
                   </Select>
                 )}
               />
-              {errors.frequency && <p className="text-xs text-red-500">{errors.frequency.message}</p>}
+              {errors.frequency && (
+                <p className="text-xs text-red-500">
+                  {errors.frequency.message}
+                </p>
+              )}
             </Field>
 
             {/* TARGET DAYS */}
             <Field>
-              <Label>Target Days</Label>
+              <Label htmlFor="habit-target-days">Target Days</Label>
               <Controller
                 name="targetDays"
                 control={control}
                 render={({ field }) => (
                   <ToggleGroup
+                    id="habit-target-days"
                     value={field.value.map(String)}
                     onValueChange={field.onChange}
-                    className="flex gap-2 justify-start"
+                    className="flex justify-start gap-2"
                   >
                     {days.map((day) => (
                       <ToggleGroupItem
                         key={day.value}
                         value={day.value}
-                        className="w-10 h-10 border"
+                        className="h-10 w-10 border"
                       >
                         {day.label}
                       </ToggleGroupItem>
@@ -181,12 +190,22 @@ export function DialogHabits() {
                   </ToggleGroup>
                 )}
               />
-              {errors.targetDays && <p className="text-xs text-red-500">{errors.targetDays.message}</p>}
+              {errors.targetDays && (
+                <p className="text-xs text-red-500">
+                  {errors.targetDays.message}
+                </p>
+              )}
             </Field>
           </FieldGroup>
 
           <DialogFooter>
-            <DialogClose render={<Button variant="outline" type="button">Cancel</Button>} />
+            <DialogClose
+              render={
+                <Button variant="outline" type="button">
+                  Cancel
+                </Button>
+              }
+            />
             <Button type="submit" disabled={!isValid || isPending}>
               {isPending ? "Saving..." : "Save changes"}
             </Button>
