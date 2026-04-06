@@ -1,10 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
-import {
-  getHabits,
-  createHabit,
-  updateHabit,
-  deleteHabit,
-} from "@/lib/query/habits"
+import { getHabits, createHabit, deleteHabit } from "@/lib/query/habits"
 import { HabitFormOutput } from "@/types/habit"
 
 const HABITS_KEY = ["habits"]
@@ -20,15 +15,6 @@ export function useCreateHabit() {
   const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (habit: HabitFormOutput) => createHabit(habit),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: HABITS_KEY }),
-  })
-}
-
-export function useUpdateHabit() {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: ({ id, habit }: { id: string; habit: HabitFormOutput }) =>
-      updateHabit(id, habit),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: HABITS_KEY }),
   })
 }
