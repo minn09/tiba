@@ -3,16 +3,28 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 
-export async function signIn(email: string, password: string) {
+export type AuthResult = { error: string } | undefined
+
+export async function signIn(
+  email: string,
+  password: string
+): Promise<AuthResult> {
   const supabase = await createClient()
 
   const { error } = await supabase.auth.signInWithPassword({ email, password })
-  if (error) throw new Error(error.message)
 
-  redirect("/") // el middleware ya protege la ruta destino
+  if (error) {
+    return { error: error.message }
+  }
+
+  redirect("/")
 }
 
-export async function signUp(email: string, password: string, name: string) {
+export async function signUp(
+  email: string,
+  password: string,
+  name: string
+): Promise<AuthResult> {
   const supabase = await createClient()
 
   const { error } = await supabase.auth.signUp({
@@ -20,7 +32,10 @@ export async function signUp(email: string, password: string, name: string) {
     password,
     options: { data: { name } },
   })
-  if (error) throw new Error(error.message)
+
+  if (error) {
+    return { error: error.message }
+  }
 
   redirect("/login?message=Revisa tu correo para confirmar tu cuenta")
 }
