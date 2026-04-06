@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/select"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 
-import { createHabit } from "@/lib/query/habits"
+import { useCreateHabit } from "@/hooks/useHabits"
 import { HabitFormInput, HabitFormOutput, habitSchema } from "@/types/habit"
 
 const items = [
@@ -51,13 +51,14 @@ const days = [
 
 export function DialogHabits() {
   const [open, setOpen] = useState(false)
+  const { mutateAsync: createHabit, isPending } = useCreateHabit()
 
   const {
     register,
     handleSubmit,
     control,
     reset,
-    formState: { errors, isValid, isSubmitting }
+    formState: { errors, isValid }
   } = useForm<HabitFormInput>({
     resolver: zodResolver(habitSchema),
     mode: "onChange",
@@ -72,21 +73,19 @@ export function DialogHabits() {
   })
 
   const onSubmit = async (values: HabitFormInput) => {
-    // En este punto, Zod ya validó y transformó todo.
-    // Hacemos el cast al tipo de SALIDA (Output) que espera createHabit.
-    const data = values as HabitFormOutput;
-
-    try {
-      await createHabit(data); // Ahora sí coinciden los tipos
-      toast.success("¡Hábito creado!");
-      setOpen(false);
-      reset();
-    } catch (e: unknown) {
-      toast.error("Error al crear", {
-        description: e instanceof Error ? e.message : "Unknown error"
-      });
-    }
-  };
+    await createHabit(values as HabitFormOutput, {
+      onSuccess: () => {
+        toast.success("¡Hábito creado!")
+        setOpen(false)
+        reset()
+      },
+      onError: (e) => {
+        toast.error("Error al crear", {
+          description: e instanceof Error ? e.message : "Unknown error"
+        })
+      }
+    })
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -188,8 +187,8 @@ export function DialogHabits() {
 
           <DialogFooter>
             <DialogClose render={<Button variant="outline" type="button">Cancel</Button>} />
-            <Button type="submit" disabled={!isValid || isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save changes"}
+            <Button type="submit" disabled={!isValid || isPending}>
+              {isPending ? "Saving..." : "Save changes"}
             </Button>
           </DialogFooter>
         </form>

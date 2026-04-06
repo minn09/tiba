@@ -9,9 +9,19 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarDays, CheckCircle2 } from "lucide-react";
 import { HabitFormInput } from "@/types/habit";
 import { getDayNames } from "@/utils/getDayNames";
-import { Button } from "./ui/button";
-import { useDeleteHabit } from "@/hooks/useDeleteHabit";
-
+import { useDeleteHabit } from "@/hooks/useHabits";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
 
 export default function HabitCard({ habit }: { habit: HabitFormInput }) {
   const { mutate: remove, isPending } = useDeleteHabit()
@@ -60,13 +70,30 @@ export default function HabitCard({ habit }: { habit: HabitFormInput }) {
             <span>Desde el {date}</span>
           </div>
           <div>
-            <Button
-              variant="destructive"
-              disabled={isPending}
-              onClick={() => remove(habit.id!)}
-            >
-              {isPending ? "Eliminando..." : "Delete"}
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger render={
+                <Button variant="destructive" disabled={isPending}>
+                  Delete
+                </Button>
+              } />
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>¿Estás seguro?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Esta acción no se puede deshacer. El hábito será eliminado permanentemente.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => remove(habit.id!)}
+                    disabled={isPending}
+                  >
+                    {isPending ? "Eliminando..." : "Eliminar"}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
             <Button>Update</Button>
           </div>
         </div>

@@ -19,7 +19,7 @@ export async function createHabit(habit: HabitFormOutput) {
   return data
 }
 
-export async function updateHabit(id: number, habit: HabitFormOutput) {
+export async function updateHabit(id: string, habit: HabitFormOutput) {
   const supabase = await createClient()
   const { data, error } = await supabase
     .from("habits")
